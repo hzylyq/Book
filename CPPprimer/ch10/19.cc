@@ -28,22 +28,22 @@ string make_plural(size_t ctr, const string &word,
     return (ctr > 1) ? word+ending : word;
 }
 
-    void
-    biggies(vector<string> &words,
-            vector<string>::size_type sz)
+void biggies(vector<string> &words,
+             vector<string>::size_type sz)
 {
     elimDups(words);
 
-    stable_sort(words.begin(), words.end(),
-    [](const string &a, const string &b)
+    for_each(words.begin(), words.end(),
+    [](const string s)
     {
-        return a.size() < b.size();
+        cout << s << " ";
     });
+    cout << endl;
 
-    auto wc = find_if(words.begin(), words.end(),
+    auto wc = stable_partition(words.begin(), words.end(),
     [sz](const string &a)
     {
-        return a.size() > sz;
+        return a.size() >= sz;
     });
 
     auto count = words.end() - wc;
