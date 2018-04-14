@@ -7,8 +7,12 @@
 #include <stdexcept>
 #include <initializer_list>
 
+class StrBlobPtr;
+
 class StrBlob
 {
+  friend class StrBlobPtr;
+
 public:
   typedef std::vector<std::string>::size_type size_type;
   StrBlob();
@@ -22,6 +26,13 @@ public:
   const std::string &front() const;
   std::string &back();
   const std::string &back() const;
+
+  //提供给StrBlobPtr的接口
+  StrBlobPtr begin();
+  StrBlobPtr end();
+
+  StrBlobPtr begin() const;
+  StrBlobPtr end() const;
 
 private:
   std::shared_ptr<std::vector<std::string>> data;
