@@ -4,16 +4,25 @@
 class HasPtr
 {
   public:
-    HasPtr(const std::string &s = std::string()) : ps(new std::string(s)), i(0) {}
+    HasPtr(const std::string &s = std::string()) : ps(new std::string(s)), i(0), use(new std::size_t(1)) {}
 
-    HasPtr(const HasPtr &hp) : ps(new std::string(*hp.ps)), i(hp.i) {}
+    HasPtr(const HasPtr &hp) : ps(new std::string(*hp.ps)), i(hp.i), use(hp.use)
+    {
+        ++*use;
+    }
 
     HasPtr &operator=(const HasPtr &rhs)
     {
-        auto newps = new std::string(*rhs.ps);
-        delete ps;
-        ps = newps;
+        ++*rhs.use;
+        if (--*use == 0)
+        {
+            delete ps;
+            delete use;
+        }
+        
+        ps = rhs.ps;
         i = rhs.i;
+        use = rhs.use;
 
         return *this;
     }
@@ -24,19 +33,24 @@ class HasPtr
         return *this;
     }
 
-    std::string& operator*()
+    std::string &operator*()
     {
         return *ps;
     }
 
     ~HasPtr()
     {
-        delete ps;
+        if (--*use == 0)
+        {
+            delete ps;
+            delete use;
+        }
     }
 
   private:
     std::string *ps;
     int i;
+    std::size_t *use;
 };
 
 int main(void)
