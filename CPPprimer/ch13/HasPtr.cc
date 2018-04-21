@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 
 class HasPtr
@@ -5,11 +6,7 @@ class HasPtr
   public:
     HasPtr(const std::string &s = std::string()) : ps(new std::string(s)), i(0) {}
 
-    HasPtr(const HasPtr &hp)
-    {
-        ps = new std::string(*hp.ps);
-        i = hp.i;
-    }
+    HasPtr(const HasPtr &hp) : ps(new std::string(*hp.ps)), i(hp.i) {}
 
     HasPtr &operator=(const HasPtr &rhs)
     {
@@ -19,6 +16,17 @@ class HasPtr
         i = rhs.i;
 
         return *this;
+    }
+
+    HasPtr &operator=(const std::string &rhs)
+    {
+        *ps = rhs;
+        return *this;
+    }
+
+    std::string& operator*()
+    {
+        return *ps;
     }
 
     ~HasPtr()
@@ -33,5 +41,16 @@ class HasPtr
 
 int main(void)
 {
+    HasPtr h("Hai, mom");
+    HasPtr h2(h);
+    HasPtr h3 = h;
+
+    h2 = "Hai, dad";
+    h3 = "Hai, sun";
+
+    std::cout << *h << std::endl;
+    std::cout << *h2 << std::endl;
+    std::cout << *h3 << std::endl;
+
     return 0;
 }
