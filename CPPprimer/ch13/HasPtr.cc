@@ -3,6 +3,8 @@
 
 class HasPtr
 {
+    friend void swap(HasPtr &, HasPtr &);
+
   public:
     HasPtr(const std::string &s = std::string()) : ps(new std::string(s)), i(0), use(new std::size_t(1)) {}
 
@@ -19,7 +21,7 @@ class HasPtr
             delete ps;
             delete use;
         }
-        
+
         ps = rhs.ps;
         i = rhs.i;
         use = rhs.use;
@@ -38,6 +40,11 @@ class HasPtr
         return *ps;
     }
 
+    bool operator<(const HasPtr& rhs) const
+    {
+        return *ps < *rhs.ps;
+    }
+
     ~HasPtr()
     {
         if (--*use == 0)
@@ -53,6 +60,14 @@ class HasPtr
     std::size_t *use;
 };
 
+inline void swap(HasPtr &lhs, HasPtr &rhs)
+{
+    using std::swap;
+    std::cout << "交换" << *lhs.ps << "和" << *rhs.ps << std::endl;
+    swap(lhs.ps, rhs.ps);
+    swap(lhs.i, rhs.i);
+}
+
 int main(void)
 {
     HasPtr h("Hai, mom");
@@ -61,10 +76,12 @@ int main(void)
 
     h2 = "Hai, dad";
     h3 = "Hai, sun";
+    swap(h2, h3);
 
     std::cout << *h << std::endl;
     std::cout << *h2 << std::endl;
     std::cout << *h3 << std::endl;
+    std::cout << (h2 < h3) << std::endl;
 
     return 0;
 }
