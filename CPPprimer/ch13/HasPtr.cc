@@ -21,6 +21,11 @@ class HasPtr
         return *this;
     }
 
+    ~HasPtr()
+    {
+        delete ps;
+    }
+
   private:
     std::string *ps;
     int i;
