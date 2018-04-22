@@ -45,8 +45,20 @@ void Message::remove_from_Folders()
         f->remMsg(this);
 }
 
-void swap(Message &, Message &)
+void swap(Message &lhs, Message &rhs)
 {
     using std::swap;
 
+    for (auto f : lhs.folders)
+        f->remMsg(&lhs);
+    for (auto f : rhs.folders)
+        f->remMsg(&rhs);
+    
+    swap(lhs.folders, rhs.folders);
+    swap(lhs.contents, rhs.contents);
+
+    for (auto f : lhs.folders)
+        f->addMsg(&lhs);
+    for (auto f : rhs.folders)
+        f->addMsg(&rhs);
 }
