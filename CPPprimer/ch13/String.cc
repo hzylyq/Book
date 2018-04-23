@@ -11,6 +11,7 @@ String &String::operator=(const String &rhs)
         a.deallocate(p, sz);
     p = newp;
     sz = rhs.sz;
+    cout << "Copy operate=" << endl;
 
     return *this;
 }

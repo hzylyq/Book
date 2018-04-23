@@ -5,6 +5,9 @@
 #include <iostream>
 #include <memory>
 
+using std::cout;
+using std::endl;
+
 class String
 {
     friend String operator+(const String &, const String &);
@@ -23,6 +26,8 @@ class String
     String(const String &s) : sz(s.sz), p(a.allocate(s.sz))
     {
         std::uninitialized_copy(s.p, s.p + sz, p);
+
+        cout << "Copy construction" << endl;
     }
 
     String(size_t n, char c) : sz(n), p(a.allocate(n))
