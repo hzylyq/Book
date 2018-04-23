@@ -35,12 +35,19 @@ class HasPtr
         return *this;
     }
 
+    HasPtr(HasPtr &&p) noexcept : ps(p.ps), i(p.i), use(p.use)
+    {
+        p.ps = nullptr;
+        p.use = nullptr;
+        p.i = 0;
+    }
+
     std::string &operator*()
     {
         return *ps;
     }
 
-    bool operator<(const HasPtr& rhs) const
+    bool operator<(const HasPtr &rhs) const
     {
         return *ps < *rhs.ps;
     }

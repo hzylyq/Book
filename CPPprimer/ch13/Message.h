@@ -8,39 +8,45 @@ class Folder;
 
 class Message
 {
-    friend class Folder;
+  friend class Folder;
 
-    friend void swap(Message &, Message &);
+  friend void swap(Message &, Message &);
 
-  public:
-    explicit Message(const std::string &str = "") : contents(str) {}
+public:
+  explicit Message(const std::string &str = "") : contents(str) {}
 
-    Message(const Message &);
+  Message(const Message &);
 
-    Message &operator=(const Message &);
+  Message &operator=(const Message &);
 
-    ~Message();
+  Message(Message &&);
 
-    void save(Folder &);
+  Message &operator=(Message &&rhs);
 
-    void remove(Folder &);
+  ~Message();
 
-    void addFldr(Folder *f)
-    {
-      folders.insert(f);
-    }
+  void save(Folder &);
 
-    void remFldr(Folder *f)
-    {
-      folders.erase(f);
-    }
+  void remove(Folder &);
 
-  private:
-    std::string contents;
-    std::set<Folder *> folders;
+  void addFldr(Folder *f)
+  {
+    folders.insert(f);
+  }
 
-    void add_to_Folders(const Message &);
-    void remove_from_Folders();
+  void remFldr(Folder *f)
+  {
+    folders.erase(f);
+  }
+
+  void move_Folders(Message *m);
+
+private:
+  std::string contents;
+  std::set<Folder *> folders;
+
+  void add_to_Folders(const Message &);
+  void remove_from_Folders();
 };
 
 #endif

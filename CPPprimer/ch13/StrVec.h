@@ -15,6 +15,8 @@ class StrVec
     StrVec(const StrVec &);
     StrVec(std::initializer_list<std::string> il);
     StrVec &operator=(const StrVec &);
+    StrVec(StrVec &&) noexcept;
+    StrVec &operator=(StrVec &&) noexcept;
     ~StrVec();
 
     void push_back(const std::string &);
