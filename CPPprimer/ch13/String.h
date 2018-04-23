@@ -27,7 +27,28 @@ class String
     {
         std::uninitialized_copy(s.p, s.p + sz, p);
 
-        cout << "Copy construction" << endl;
+        cout << "Copy construction " << s << endl;
+    }
+
+    String(String &&s) noexcept : sz(s.sz), p(s.p)
+    {
+        cout << "Move construction " << s << endl;
+        s.sz = 0;
+        s.p = nullptr;
+    }
+
+    String &operator=(String &&rhs) noexcept
+    {
+        if (this != &rhs)
+        {
+            a.deallocate(p, sz);
+            p = rhs.p;
+            sz = rhs.sz;
+            rhs.p = nullptr;
+            rhs.sz = 0;
+        }
+
+        return *this;
     }
 
     String(size_t n, char c) : sz(n), p(a.allocate(n))

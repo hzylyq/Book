@@ -42,6 +42,22 @@ class HasPtr
         p.i = 0;
     }
 
+    HasPtr& operator=(HasPtr &&rhs) noexcept
+    {
+        std::cout << "Move Assignment" << std::endl;
+        if (this != &rhs)
+        {
+            delete ps;
+            ps = rhs.ps;
+            use = rhs.use;
+            rhs.ps = nullptr;
+            rhs.use = nullptr;
+            rhs.i = 0;
+        }
+
+        return *this;
+    }
+
     std::string &operator*()
     {
         return *ps;
