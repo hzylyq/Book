@@ -15,6 +15,9 @@ class String
     friend std::ostream &operator<<(std::ostream &, const String &);
     friend std::ostream &print(std::ostream &, const String &);
 
+    friend bool operator==(const String &lhs, const String &rhs);
+    friend bool operator!=(const String &lhs, const String &rhs);
+
   public:
     String() : sz(0), p(nullptr) {}
 

@@ -60,3 +60,13 @@ String operator+(const String &lhs, const String &rhs)
 {
     return add(lhs, rhs);
 }
+
+bool operator==(const String &lhs, const String &rhs)
+{
+    return strcmp(lhs.p, rhs.p);
+}
+
+bool operator!=(const String &lhs, const String &rhs)
+{
+    return !(lhs == rhs);
+}
