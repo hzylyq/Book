@@ -22,6 +22,8 @@ class StrVec
     StrVec &operator=(StrVec &&) noexcept;
     ~StrVec();
 
+    StrVec & operator=(std::initializer_list<std::string> il);
+
     void push_back(const std::string &);
 
     void reverse(size_t n)
