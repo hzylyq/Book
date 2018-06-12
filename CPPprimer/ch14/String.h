@@ -18,6 +18,11 @@ class String
     friend bool operator==(const String &lhs, const String &rhs);
     friend bool operator!=(const String &lhs, const String &rhs);
 
+    friend bool operator<(const String &lhs, const String &rhs);
+    friend bool operator<=(const String &lhs, const String &rhs);
+    friend bool operator>(const String &lhs, const String &rhs);
+    friend bool operator>=(const String &lhs, const String &rhs);
+
   public:
     String() : sz(0), p(nullptr) {}
 

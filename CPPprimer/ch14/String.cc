@@ -70,3 +70,23 @@ bool operator!=(const String &lhs, const String &rhs)
 {
     return !(lhs == rhs);
 }
+
+bool operator<(const String &lhs, const String &rhs)
+{
+    return strcmp(lhs.p, rhs.p) < 0;
+}
+
+bool operator<=(const String &lhs, const String &rhs)
+{
+    return strcmp(lhs.p, rhs.p) <= 0;
+}
+
+bool operator>(const String &lhs, const String &rhs)
+{
+    return strcmp(lhs.p, rhs.p) > 0;
+}
+
+bool operator>=(const String &lhs, const String &rhs)
+{
+    return strcmp(lhs.p, rhs.p) >= 0;
+}

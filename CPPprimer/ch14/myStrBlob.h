@@ -18,6 +18,11 @@ class StrBlob
     friend bool operator==(const StrBlob &lhs, const StrBlob &rhs);
     friend bool operator!=(const StrBlob &lhs, const StrBlob &rhs);
 
+    friend bool operator<(const StrBlob &lhs, const StrBlob &rhs);
+    friend bool operator<=(const StrBlob &lhs, const StrBlob &rhs);
+    friend bool operator>(const StrBlob &lhs, const StrBlob &rhs);
+    friend bool operator>=(const StrBlob &lhs, const StrBlob &rhs);
+
   public:
     typedef vector<string>::size_type size_type;
     StrBlob();
@@ -100,14 +105,34 @@ inline void StrBlob::pop_back()
     data->pop_back();
 }
 
-bool operator==(const StrBlob &rhs, const StrBlob &lhs)
+bool operator==(const StrBlob &lhs, const StrBlob &rhs)
 {
     return rhs.data == lhs.data;
 }
 
-bool operator!=(const StrBlob &rhs, const StrBlob &lhs)
+bool operator!=(const StrBlob &lhs, const StrBlob &rhs)
 {
-    return !(rhs == lhs);
+    return !(lhs == rhs);
+}
+
+bool operator<(const StrBlob &lhs, const StrBlob &rhs)
+{
+    return *(lhs.data) < *(rhs.data);
+}
+
+bool operator<=(const StrBlob &lhs, const StrBlob &rhs)
+{
+    return *(lhs.data) <= *(rhs.data);
+}
+
+bool operator>(const StrBlob &lhs, const StrBlob &rhs)
+{
+    return *(lhs.data) > *(rhs.data);
+}
+
+bool operator>=(const StrBlob &lhs, const StrBlob &rhs)
+{
+    return *(lhs.data) >= *(rhs.data);
 }
 
 class StrBlobPtr
@@ -116,6 +141,11 @@ class StrBlobPtr
 
     friend bool operator==(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
     friend bool operator!=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+
+    friend bool operator<(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+    friend bool operator<=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+    friend bool operator>(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
+    friend bool operator>=(const StrBlobPtr &lhs, const StrBlobPtr &rhs);
 
   public:
     StrBlobPtr() : curr(0) {}
@@ -223,6 +253,54 @@ bool operator==(const StrBlobPtr &lhs, const StrBlobPtr &rhs)
 bool operator!=(const StrBlobPtr &lhs, const StrBlobPtr &rhs)
 {
     return !(lhs == rhs);
+}
+
+bool operator<(const StrBlobPtr &lhs, const StrBlobPtr &rhs)
+{
+    auto l = lhs.wptr.lock(), r = rhs.wptr.lock();
+
+    if (l == r)
+    {
+        if (!r)
+            return false;
+        return lhs.curr < rhs.curr;
+    }
+    else
+        return false;
+}
+
+bool operator<=(const StrBlobPtr &lhs, const StrBlobPtr &rhs)
+{
+    auto l = lhs.wptr.lock(), r = rhs.wptr.lock();
+
+    if (l == r)
+        return (!l) || (lhs.curr <= rhs.curr);
+    else
+        return false;
+}
+
+bool operator>(const StrBlobPtr &lhs, const StrBlobPtr &rhs)
+{
+    auto l = lhs.wptr.lock(), r = rhs.wptr.lock();
+
+    if (l == r)
+    {
+        if (!r)
+            return false;
+        return lhs.curr > rhs.curr;
+    }
+    else
+        return false;
+}
+
+bool operator>=(const StrBlobPtr &lhs, const StrBlobPtr &rhs)
+{
+    auto l = lhs.wptr.lock(), r = rhs.wptr.lock();
+
+    if (l == r)
+        return (!r) || (lhs.curr >= rhs.curr);
+    else
+        return false;
 }
 
 #endif

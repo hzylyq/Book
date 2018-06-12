@@ -53,7 +53,7 @@ StrVec::~StrVec()
     });
 }
 
-StrVec& StrVec::operator=(std::initializer_list<std::string> il)
+StrVec &StrVec::operator=(std::initializer_list<std::string> il)
 {
     auto data = alloc_n_copy(il.begin(), il.end());
     free();
@@ -135,4 +135,76 @@ bool operator==(const StrVec &lhs, const StrVec &rhs)
 bool operator!=(const StrVec &lhs, const StrVec &rhs)
 {
     return !(lhs == rhs);
+}
+
+bool operator<(const StrVec &lhs, const StrVec &rhs)
+{
+    auto l = lhs.begin(), r = rhs.begin();
+    for (l = lhs.begin(), r = rhs.begin();
+         l != lhs.end() && r != rhs.end();
+         l++, r++)
+    {
+        if (*l < *r)
+            return true;
+        else if (*l > *r)
+            return false;
+    }
+
+    if (l == lhs.end() && r != rhs.end())
+        return true;
+    return false;
+}
+
+bool operator<=(const StrVec &lhs, const StrVec &rhs)
+{
+    auto l = lhs.begin(), r = rhs.begin();
+    for (l = lhs.begin(), r = rhs.begin();
+         l != lhs.end() && r != rhs.end();
+         l++, r++)
+    {
+        if (*l < *r)
+            return true;
+        else if (*l > *r)
+            return false;
+    }
+
+    if (l == lhs.end())
+        return true;
+    return false;
+}
+
+bool operator>(const StrVec &lhs, const StrVec &rhs)
+{
+    auto l = lhs.begin(), r = rhs.begin();
+    for (l = lhs.begin(), r = rhs.begin();
+         l != lhs.end() && r != rhs.end();
+         l++, r++)
+    {
+        if (*l < *r)
+            return false;
+        else if (*l > *r)
+            return true;
+    }
+
+    if (l != lhs.end() && r == rhs.end())
+        return true;
+    return false;
+}
+
+bool operator>(const StrVec &lhs, const StrVec &rhs)
+{
+    auto l = lhs.begin(), r = rhs.begin();
+    for (l = lhs.begin(), r = rhs.begin();
+         l != lhs.end() && r != rhs.end();
+         l++, r++)
+    {
+        if (*l < *r)
+            return false;
+        else if (*l > *r)
+            return true;
+    }
+
+    if (r == rhs.end())
+        return true;
+    return false;
 }
