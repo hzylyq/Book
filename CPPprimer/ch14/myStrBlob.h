@@ -49,6 +49,9 @@ class StrBlob
     StrBlobPtr begin() const;
     StrBlobPtr end() const;
 
+    std::string &operator[](std::size_t n) { return (*data)[n]; }
+    const std::string &operator[](std::size_t n) const { return (*data)[n]; }
+
   private:
     shared_ptr<vector<string>> data;
     void check(size_type i, const string &msg) const;
@@ -155,7 +158,11 @@ class StrBlobPtr
     string &deref() const;
     string &deref(int off) const;
     StrBlobPtr &incr(); //前缀递增
-    StrBlobPtr &decr(); //前缀递减
+    StrBlobPtr &decr(); //
+
+    std::string &operator[](std::size_t n) { return (*wptr.lock())[n]; }
+    const std::string &operator[](std::size_t n) const { return (*wptr.lock())[n]; }
+
   private:
     shared_ptr<vector<string>> check(size_t, const string &) const;
     weak_ptr<vector<string>> wptr;
