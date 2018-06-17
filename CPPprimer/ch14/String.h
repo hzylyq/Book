@@ -77,6 +77,9 @@ class String
 
     String &operator=(char);
 
+    char &operator[](std::size_t n){return p[n]};
+    const char &operator[](std::size_t n) const { return p[n]; }
+
     const char *begin() { return p; }
     const char *begin() const { return p; }
     const char *end() { return p + sz; }

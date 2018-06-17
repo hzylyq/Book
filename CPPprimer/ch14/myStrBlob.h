@@ -49,6 +49,9 @@ class StrBlob
     StrBlobPtr begin() const;
     StrBlobPtr end() const;
 
+    std::string &operator[](std::size_t n) { return (*data)[n]; }
+    const std::string &operator[](std::size_t n) const { return (*data)[n]; }
+
   private:
     shared_ptr<vector<string>> data;
     void check(size_type i, const string &msg) const;
@@ -166,6 +169,11 @@ class StrBlobPtr
 
     StrBlobPtr operator+(int n);
     StrBlobPtr operator-(int n);
+
+    StrBlobPtr &decr(); //
+
+    std::string &operator[](std::size_t n) { return (*wptr.lock())[n]; }
+    const std::string &operator[](std::size_t n) const { return (*wptr.lock())[n]; }
 
   private:
     shared_ptr<vector<string>> check(size_t, const string &) const;

@@ -27,7 +27,10 @@ class StrVec
     StrVec &operator=(StrVec &&) noexcept;
     ~StrVec();
 
-    StrVec & operator=(std::initializer_list<std::string> il);
+    StrVec &operator=(std::initializer_list<std::string> il);
+
+    std::string &operator[](std::size_t n) { return elements[n]; }
+    const std::string &operator[](std::size_t n) const { return elements[n]; }
 
     void push_back(const std::string &);
 
