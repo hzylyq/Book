@@ -156,6 +156,17 @@ class StrBlobPtr
     string &deref(int off) const;
     StrBlobPtr &incr(); //前缀递增
     StrBlobPtr &decr(); //前缀递减
+
+    //前缀
+    StrBlobPtr &operator++();
+    StrBlobPtr &operator--();
+    //后缀
+    StrBlobPtr &operator++(int);
+    StrBlobPtr &operator--(int);
+
+    StrBlobPtr operator+(int n);
+    StrBlobPtr operator-(int n);
+
   private:
     shared_ptr<vector<string>> check(size_t, const string &) const;
     weak_ptr<vector<string>> wptr;
@@ -301,6 +312,48 @@ bool operator>=(const StrBlobPtr &lhs, const StrBlobPtr &rhs)
         return (!r) || (lhs.curr >= rhs.curr);
     else
         return false;
+}
+
+StrBlobPtr &StrBlobPtr::operator++()
+{
+    check(curr, "increment past end of StrBlobPtr");
+    ++curr;
+    return *this;
+}
+
+StrBlobPtr &StrBlobPtr::operator--()
+{
+    --curr;
+    check(-1, "decrement past end of StrBlobPtr");
+    return *this;
+}
+
+StrBlobPtr &StrBlobPtr::operator++(int)
+{
+    StrBlobPtr ret = *this;
+    ++(*this);
+    return ret;
+}
+
+StrBlobPtr &StrBlobPtr::operator--(int)
+{
+    StrBlobPtr ret = *this;
+    --(*this);
+    return ret;
+}
+
+StrBlobPtr StrBlobPtr::operator+(int n)
+{
+    auto ret = *this;
+    ret.curr += n;
+    return ret;
+}
+
+StrBlobPtr StrBlobPtr::operator-(int n)
+{
+    auto ret = *this;
+    ret.curr -= n;
+    return ret;
 }
 
 #endif
