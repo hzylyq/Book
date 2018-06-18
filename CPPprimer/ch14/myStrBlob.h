@@ -170,10 +170,30 @@ class StrBlobPtr
     StrBlobPtr operator+(int n);
     StrBlobPtr operator-(int n);
 
-    StrBlobPtr &decr(); //
-
     std::string &operator[](std::size_t n) { return (*wptr.lock())[n]; }
     const std::string &operator[](std::size_t n) const { return (*wptr.lock())[n]; }
+
+    std::string &operator*() const
+    {
+        auto p = check(curr, "dereference past end");
+        return (*p)[curr];
+    }
+
+    std::string *operator->() const
+    {
+        return &(this->operator*());
+    }
+
+    /* std::string &operator*() const
+    {
+        auto p = check(curr, "dereference past end");
+        return (*p)[curr];
+    }
+
+    std::string *operator->() const
+    {
+        return &(this->operator*());
+    } */
 
   private:
     shared_ptr<vector<string>> check(size_t, const string &) const;
