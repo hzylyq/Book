@@ -73,8 +73,8 @@ func main() {
 	//}
 	//client.Insert(&Author2)
 	//var person []Person
-	var author Result
+	var result Result
 
-	err := (client.Model(&author).Column("*").Join("INNER JOIN people").JoinOn("people.customer_id=author.author_id")).Last()
-	fmt.Println(err, author)
+	err := (client.Model(Result{}).Column("*").Join("INNER JOIN people").JoinOn("people.customer_id=author.author_id")).Select(result)
+	fmt.Println(err)
 }
