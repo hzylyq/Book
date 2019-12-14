@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/go-pg/pg"
 	"log"
 	"time"
@@ -37,10 +36,6 @@ func main() {
 
 	var Pers []Person
 	//Select * from Person
-	client.Model(&Pers).Select()
-	client.Model(&Pers).Column("*").Select()
-	fmt.Println(Pers)
-	//SELECT CustomerName, City FROM Customers;
-	client.Model(&Pers).Column("CustomerName").Column("city").Select()
-	fmt.Println(Pers)
+	client.Model(&Pers).Where("person.address = 'aaaaaaaa'").Select()
+
 }
