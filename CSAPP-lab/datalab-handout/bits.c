@@ -220,7 +220,8 @@ int tmin(void)
  */
 int fitsBits(int x, int n)
 {
-  return 2;
+  int shift = 33 + ~n;
+  return !(x ^ ((x << shift) >> shift));
 }
 /* 
  * divpwr2 - Compute x/(2^n), for 0 <= n <= 30
@@ -232,7 +233,10 @@ int fitsBits(int x, int n)
  */
 int divpwr2(int x, int n)
 {
-  return 2;
+  int isNeg = x >> 31;
+  int a = ((isNeg & 1) << n) + isNeg;
+
+  return (x + a) >> n;
 }
 /* 
  * negate - return -x 
@@ -254,7 +258,7 @@ int negate(int x)
  */
 int isPositive(int x)
 {
-  return 2;
+  return (!x) ^ (!(x >> 31));
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
