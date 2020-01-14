@@ -269,7 +269,10 @@ int isPositive(int x)
  */
 int isLessOrEqual(int x, int y)
 {
-  return 2;
+  int ysign = (y >> 31) & 1;
+	int xsign = (x >> 31) & 1;
+  int z = (!(ysign^xsign)) & (((x+~y)>>31) & 1);
+  return z|((!ysign) & xsign);
 }
 /*
  * ilog2 - return floor(log base 2 of x), where x > 0
@@ -280,7 +283,13 @@ int isLessOrEqual(int x, int y)
  */
 int ilog2(int x)
 {
-  return 2;
+  int result = 0;
+  result = (!!(x >> 16)) << 4; // if > 16? 
+  result = result + ((!!(x >> (result + 8))) << 3);
+  result = result + ((!!(x >> (result + 4))) << 2);
+  result = result + ((!!(x >> (result + 2))) << 1);
+  result = result + (!!(x >> (result + 1)));
+  return result;
 }
 /* 
  * float_neg - Return bit-level equivalent of expression -f for
@@ -295,7 +304,14 @@ int ilog2(int x)
  */
 unsigned float_neg(unsigned uf)
 {
-  return 2;
+   int nanCheck = 0x000000FF << 23; /*1's in the 8 exponent bits*/
+   int frac = 0x7FFFFF & uf; /*contains just the fraction value*/
+
+  if((nanCheck & uf) == nanCheck && frac) {
+    return uf;
+  }
+
+  return uf ^ (1 << 31);
 }
 /* 
  * float_i2f - Return bit-level equivalent of expression (float) x
@@ -308,7 +324,28 @@ unsigned float_neg(unsigned uf)
  */
 unsigned float_i2f(int x)
 {
-  return 2;
+  int e = 158;
+  int mask = 1 << 31;
+  int sign = x&mask;
+  int frac;
+  if (x == mask) {
+    return mask | (158<<23);
+  }
+  if (!x) {
+    return 0;
+  }
+  if (sign) {
+    x = ~x + 1;
+  }
+  while (!(x&mask)) {
+    x = x << 1;
+    e = e - 1;
+  }
+  frac = (x&(~mask)) >> 8;
+  if (x&0x80 && ((x&0x7F)>0 || frac&1)) {
+    frac = frac+1;
+  }
+  return sign+(e<<23) + frac;
 }
 /* 
  * float_twice - Return bit-level equivalent of expression 2*f for
