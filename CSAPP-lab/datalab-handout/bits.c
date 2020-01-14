@@ -197,7 +197,10 @@ int bitCount(int x)
  */
 int bang(int x)
 {
-  return (~(x | (~x + 1))) & 0x01;
+  int q = ((~x)+1)|x;
+  int r = q >> 31;
+  int s = r & 1;
+  return (s ^ 1);
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -360,5 +363,15 @@ unsigned float_i2f(int x)
  */
 unsigned float_twice(unsigned uf)
 {
-  return 2;
+  if (uf == 0 || uf == 0x80000000)
+    return uf;
+  
+  if (((uf >> 23) & 0xff) == 0xff)
+    return uf;
+
+  if (((uf >> 23) & 0xff) == 0x00) {
+    return (uf & (1<<31)) | (uf<<1);
+  }
+
+  return uf + (1<<23);
 }
