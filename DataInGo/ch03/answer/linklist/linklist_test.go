@@ -1,4 +1,4 @@
-package answer
+package linklist
 
 import (
 	"testing"
@@ -30,4 +30,17 @@ func TestPrintLots(t *testing.T) {
 	insert(2, p)
 	insert(1, p)
 	PrintLots(l, p)
+}
+
+func TestSwapNode(t *testing.T) {
+	l := MakeEmpty()
+
+	insert(7, l)
+	insert(5, l)
+	insert(3, l)
+	insert(1, l)
+
+	node1 := l.Next.Next
+	node2 := l.Next.Next.Next
+	SwapNode(l, node1, node2)
 }

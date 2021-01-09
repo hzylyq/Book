@@ -1,6 +1,4 @@
-package answer
-
-import "fmt"
+package linklist
 
 type Node struct {
 	Val  int
@@ -65,31 +63,4 @@ func insert(x int, l List) {
 	temp.Val = x
 	temp.Next = l.Next
 	l.Next = temp
-}
-
-// 3.1 打印一个单链表的所有元素
-func PrintList(l List) {
-	if l == nil {
-		return
-	}
-
-	for l.Next != nil {
-		l = l.Next
-		fmt.Printf("val is %d\n", l.Val)
-	}
-}
-
-// 3.2 PrintLots
-// 算法复杂度O(min(M,N))
-func PrintLots(p, l List) {
-	index := 1 // 从第一个元素打印
-	for p.Next != nil && l.Next != nil {
-		if l.Next.Val == index {
-			fmt.Printf("%d val is %d\n", index, p.Next.Val)
-		}
-
-		index++
-		p.Next = p.Next.Next
-		l.Next = l.Next.Next
-	}
 }
